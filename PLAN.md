@@ -24,9 +24,9 @@ and only starts once 1–9 are complete, tested, and documented.
 
 # CURRENT TASK
 
-TASK-04-01 — Episode repository
+TASK-04-04 — EpisodeImportService
 
-Status: COMPLETE
+Status: Not Done
 
 
 ---
@@ -535,7 +535,7 @@ authorization helper used by every later phase.
 
 Episode domain, list and detail endpoints, and the shared import service.
 
-- [ ] TASK-04-01 — Episode repository
+- [x] TASK-04-01 — Episode repository
 
   Objective:
   Data access for episodes.
@@ -554,7 +554,7 @@ Episode domain, list and detail endpoints, and the shared import service.
   Commit:
   feat(episodes): add repository with cursor pagination and filters
 
-- [ ] TASK-04-02 — Cursor pagination helper
+- [x] TASK-04-02 — Cursor pagination helper
 
   Objective:
   Reusable cursor encoder/decoder used by every list endpoint.
@@ -571,7 +571,7 @@ Episode domain, list and detail endpoints, and the shared import service.
   Commit:
   feat(pagination): add bidirectional keyset cursor helper
 
-- [ ] TASK-04-03 — Episode endpoints
+- [x] TASK-04-03 — Episode endpoints
 
   Objective:
   Implement `GET /episodes` and `GET /episodes/{episode_id}` per

@@ -4,6 +4,7 @@ from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, cast
+from uuid import UUID
 
 from sqlalchemy import Select, and_, exists, or_, select
 from sqlalchemy.dialects.postgresql import insert
@@ -118,6 +119,18 @@ class EpisodeRepository:
         )
         result = await self._session.execute(statement)
         return len(result.scalars().all())
+
+    async def active_episode_ids(self, episode_ids: Sequence[UUID]) -> set[UUID]:
+        """Return the IDs with an active assignment in one query."""
+        if not episode_ids:
+            return set()
+        result = await self._session.execute(
+            select(Assignment.episode_id).where(
+                Assignment.episode_id.in_(episode_ids),
+                Assignment.released_at.is_(None),
+            )
+        )
+        return set(result.scalars().all())
 
     @staticmethod
     def _filtered_statement(filters: EpisodeFilters) -> Select[Episode]:
