@@ -1,0 +1,222 @@
+# ============================================================
+# Python / Backend
+# ============================================================
+
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Python packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# Poetry
+.poetry/
+
+
+# ============================================================
+# Environment Variables / Secrets
+# ============================================================
+
+.env
+.env.*
+!.env.example
+!.env.template
+
+# Certificates / keys
+*.pem
+*.key
+*.crt
+
+secrets/
+credentials/
+
+
+# ============================================================
+# Testing / Coverage
+# ============================================================
+
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+*.cover
+
+.hypothesis/
+
+# Test reports
+test-results/
+reports/
+
+
+# ============================================================
+# Python Linters / Type Checkers
+# ============================================================
+
+.mypy_cache/
+.pyre/
+.pytype/
+.ruff_cache/
+
+
+# ============================================================
+# Node.js / React Frontend
+# ============================================================
+
+# Dependencies
+node_modules/
+
+# React / Vite / frontend build output
+dist/
+build/
+.vite/
+
+# Next.js (if ever used)
+.next/
+out/
+
+# Parcel
+.parcel-cache/
+
+# Turbo
+.turbo/
+
+# TypeScript
+*.tsbuildinfo
+
+# npm
+npm-debug.log*
+npm-error.log*
+
+# Yarn
+yarn-debug.log*
+yarn-error.log*
+
+# pnpm
+pnpm-debug.log*
+.pnpm-debug.log*
+
+# Frontend environment variables
+# Keep example files tracked
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+
+# ============================================================
+# IDEs / Editors
+# ============================================================
+
+.vscode/
+.idea/
+*.iml
+
+# VS Code history
+.history/
+
+# Jupyter
+.ipynb_checkpoints/
+
+
+# ============================================================
+# Operating System
+# ============================================================
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+
+
+# ============================================================
+# Logs
+# ============================================================
+
+*.log
+logs/
+
+
+# ============================================================
+# Databases
+# ============================================================
+
+*.db
+*.sqlite
+*.sqlite3
+
+# Database dumps
+*.dump
+*.sql.gz
+
+# Local database storage
+postgres-data/
+redis-data/
+docker-data/
+docker-volumes/
+
+
+# ============================================================
+# Temporary / Generated Files
+# ============================================================
+
+tmp/
+temp/
+*.tmp
+*.temp
+
+*.bak
+*.swp
+*.swo
+
+
+# ============================================================
+# Docker
+# ============================================================
+
+# Local Docker volumes
+docker-data/
+docker-volumes/
+
+# Docker override files
+docker-compose.override.yml
+
+
+# ============================================================
+# Generated Documentation
+# ============================================================
+
+docs/_build/
+
+
+# ============================================================
+# Local / Generated Project Data
+# ============================================================
+
+# Uncomment if these are generated locally
+# uploads/
+# exports/
+# generated/
