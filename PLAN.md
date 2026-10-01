@@ -24,9 +24,9 @@ and only starts once 1–9 are complete, tested, and documented.
 
 # CURRENT TASK
 
-TASK-01-05 — Health endpoints
+TASK-01-T1 — Phase tests
 
-Status: IN PROGRESS
+Status: NOT STARTED
 
 
 ---
@@ -172,7 +172,7 @@ configuration surface, and the doc set that every later phase will update.
   Commit:
   feat(health): add liveness and readiness endpoints
 
-- [ ] TASK-01-06 — Frontend scaffold
+- [x] TASK-01-06 — Frontend scaffold
 
   Objective:
   Scaffold the React + TypeScript app. Deliberately minimal.
