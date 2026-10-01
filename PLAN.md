@@ -24,7 +24,7 @@ and only starts once 1–9 are complete, tested, and documented.
 
 # CURRENT TASK
 
-TASK-01-02 — Backend package layout and FastAPI bootstrap
+TASK-01-03 — Error hierarchy and exception handlers
 
 Status: IN PROGRESS
 
@@ -75,7 +75,7 @@ configuration surface, and the doc set that every later phase will update.
   Commit:
   chore(repo): initialize project skeleton and docs
 
-- [ ] TASK-01-02 — Backend package layout and FastAPI bootstrap
+- [x] TASK-01-02 — Backend package layout and FastAPI bootstrap
 
   Objective:
   Scaffold the backend with the layered layout described in
