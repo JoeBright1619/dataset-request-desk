@@ -24,7 +24,7 @@ and only starts once 1–9 are complete, tested, and documented.
 
 # CURRENT TASK
 
-TASK-03-02 — Refresh-token storage and rotation
+TASK-03-05 — Object-level authorization helper
 
 Status: COMPLETE
 
@@ -435,7 +435,7 @@ authorization helper used by every later phase.
   Commit:
   feat(auth): add refresh token rotation and revocation
 
-- [ ] TASK-03-03 — Auth endpoints
+- [x] TASK-03-03 — Auth endpoints
 
   Objective:
   Implement `POST /auth/login`, `/auth/refresh`, `/auth/logout`,
@@ -450,7 +450,7 @@ authorization helper used by every later phase.
   Commit:
   feat(auth): add login, refresh, logout, and me endpoints
 
-- [ ] TASK-03-04 — Current-user and role dependencies
+- [x] TASK-03-04 — Current-user and role dependencies
 
   Objective:
   Provide the FastAPI dependencies used by every protected route.
@@ -466,7 +466,7 @@ authorization helper used by every later phase.
   Commit:
   feat(auth): add current-user and role dependencies
 
-- [ ] TASK-03-05 — Object-level authorization helper
+- [x] TASK-03-05 — Object-level authorization helper
 
   Objective:
   Standardise the "does this caller own this resource" check.
