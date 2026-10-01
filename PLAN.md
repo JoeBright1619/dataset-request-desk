@@ -24,7 +24,7 @@ and only starts once 1–9 are complete, tested, and documented.
 
 # CURRENT TASK
 
-TASK-06-02 — Assignment endpoints
+TASK-07-01 — AnalyticsRepository
 
 Status: Not Done
 
@@ -777,7 +777,7 @@ Assignment creation, listing, release, and the concurrency guarantee.
   Commit:
   feat(assignments): add repository with partial-unique-safe batch insert
 
-- [ ] TASK-06-02 — Assignment endpoints
+- [x] TASK-06-02 — Assignment endpoints
 
   Objective:
   Implement `GET/POST/DELETE /requests/{id}/assignments` per
