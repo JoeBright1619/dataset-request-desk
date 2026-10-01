@@ -32,6 +32,13 @@ class RequestCreateRequest(BaseModel):
         return value
 
 
+class RequestStatusUpdateRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    status: RequestStatus
+    reason: str | None = Field(default=None, max_length=500)
+
+
 class RequestResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 

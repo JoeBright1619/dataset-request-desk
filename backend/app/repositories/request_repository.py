@@ -84,7 +84,7 @@ class RequestRepository:
             statement = statement.with_for_update(of=Request)
 
         result = await self._session.execute(statement)
-        row = result.tuples().one_or_none()
+        row = result.one_or_none()
         if row is None:
             return None
         return RequestWithDetails(
@@ -141,7 +141,7 @@ class RequestRepository:
                 client_name=row[1],
                 episodes_assigned=row[2],
             )
-            for row in result.tuples().all()
+            for row in result.all()
         ]
 
         if decoded_cursor is not None and decoded_cursor.direction == "prev":
@@ -173,6 +173,7 @@ class RequestRepository:
         if delivered_at is not None:
             request.delivered_at = delivered_at
         await self._session.flush()
+        await self._session.refresh(request)
         return request
 
     async def append_history(

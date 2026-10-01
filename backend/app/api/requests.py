@@ -14,6 +14,7 @@ from app.schemas.request import (
     RequestListResponse,
     RequestResponse,
     RequestStatus,
+    RequestStatusUpdateRequest,
 )
 from app.services.request_service import RequestListQuery, RequestService
 
@@ -30,6 +31,19 @@ async def create_request(
 ) -> RequestResponse:
     """Create a new dataset request (clients only)."""
     return await RequestService(session).create_request(payload, current_user)
+
+
+@router.post("/{request_id}/status", response_model=RequestResponse)
+async def transition_request_status(
+    request_id: UUID,
+    payload: RequestStatusUpdateRequest,
+    session: Session,
+    current_user: CurrentUser,
+) -> RequestResponse:
+    """Transition the status of a request following the state machine."""
+    return await RequestService(session).transition_status(
+        request_id, payload, current_user
+    )
 
 
 @router.get("", response_model=RequestListResponse)

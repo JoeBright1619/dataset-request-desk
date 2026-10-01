@@ -24,7 +24,7 @@ and only starts once 1–9 are complete, tested, and documented.
 
 # CURRENT TASK
 
-TASK-05-03 — Request state machine
+TASK-05-04 — Status transition endpoint
 
 Status: Not Done
 
@@ -687,7 +687,7 @@ Request creation, listing, detail, and the single status-transition endpoint.
   Commit:
   feat(requests): add creation and read endpoints
 
-- [ ] TASK-05-03 — Request state machine
+- [x] TASK-05-03 — Request state machine
 
   Objective:
   Implement the transition table and rules from `docs/API.md` Appendix A.

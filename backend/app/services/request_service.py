@@ -1,12 +1,18 @@
-"""Domain service for request creation, retrieval, and listing."""
+"""Domain service for request creation, retrieval, listing, and status transitions."""
 
 from dataclasses import dataclass
+from datetime import UTC, datetime
 from typing import cast
 from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.errors import ForbiddenError, NotFoundError
+from app.core.errors import (
+    ForbiddenError,
+    InsufficientEpisodesError,
+    InvalidTransitionError,
+    NotFoundError,
+)
 from app.models.request import Request
 from app.models.user import User
 from app.repositories.request_repository import (
@@ -19,8 +25,19 @@ from app.schemas.request import (
     RequestListResponse,
     RequestResponse,
     RequestStatus,
+    RequestStatusUpdateRequest,
 )
 from app.services.authorization import ensure_resource_visible
+
+# Status transition rules:
+# Mapping: (from_status, to_status) -> allowed_roles
+STATUS_TRANSITIONS: dict[tuple[str, str], set[str]] = {
+    ("submitted", "in_progress"): {"operator", "admin"},
+    ("in_progress", "delivered"): {"operator", "admin"},
+    ("delivered", "accepted"): {"client"},
+    ("delivered", "rejected"): {"client"},
+    ("rejected", "in_progress"): {"operator", "admin"},
+}
 
 
 @dataclass(frozen=True)
@@ -112,6 +129,74 @@ class RequestService:
             has_prev=page.has_prev,
             limit=query.limit,
         )
+
+    async def transition_status(
+        self,
+        request_id: UUID,
+        payload: RequestStatusUpdateRequest,
+        current_user: User,
+    ) -> RequestResponse:
+        """Transition the status of a request, locked with SELECT FOR UPDATE."""
+        details = await self._requests.get_details_by_id(request_id, for_update=True)
+        if details is None:
+            raise NotFoundError()
+
+        # Check visibility first (IDOR avoidance)
+        ensure_resource_visible(details.request.client_id, current_user)
+
+        current_status = details.request.status
+        target_status = payload.status
+
+        # If already at target status or invalid transition pair
+        transition_key = (current_status, target_status)
+        allowed_roles = STATUS_TRANSITIONS.get(transition_key)
+
+        if allowed_roles is None:
+            raise InvalidTransitionError(
+                f"Cannot transition request from '{current_status}' "
+                f"to '{target_status}'"
+            )
+
+        if current_user.role not in allowed_roles:
+            raise ForbiddenError(
+                f"Role '{current_user.role}' is not permitted to transition "
+                f"from '{current_status}' to '{target_status}'"
+            )
+
+        # Precondition check: in_progress -> delivered requires enough active episodes
+        if current_status == "in_progress" and target_status == "delivered":
+            if details.episodes_assigned < details.request.episodes_requested:
+                raise InsufficientEpisodesError(
+                    f"Assigned episodes ({details.episodes_assigned}) is less "
+                    f"than requested ({details.request.episodes_requested})"
+                )
+
+        delivered_at = (
+            datetime.now(UTC)
+            if target_status == "delivered"
+            else details.request.delivered_at
+        )
+
+        updated_request = await self._requests.update_status(
+            request=details.request,
+            new_status=target_status,
+            delivered_at=delivered_at,
+        )
+
+        await self._requests.append_history(
+            request_id=updated_request.id,
+            previous_status=current_status,
+            new_status=target_status,
+            changed_by=current_user.id,
+            reason=payload.reason,
+        )
+
+        updated_details = RequestWithDetails(
+            request=updated_request,
+            client_name=details.client_name,
+            episodes_assigned=details.episodes_assigned,
+        )
+        return self._to_response(updated_details)
 
     @staticmethod
     def _to_response(details: RequestWithDetails) -> RequestResponse:
