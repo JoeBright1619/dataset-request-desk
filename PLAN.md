@@ -24,7 +24,7 @@ and only starts once 1–9 are complete, tested, and documented.
 
 # CURRENT TASK
 
-TASK-02-01 — Database engine, session, and base
+TASK-01-05 — Health endpoints
 
 Status: IN PROGRESS
 
@@ -150,7 +150,7 @@ configuration surface, and the doc set that every later phase will update.
   Commit:
   feat(core): add structured request logging middleware
 
-- [ ] TASK-01-05 — Health endpoints
+- [x] TASK-01-05 — Health endpoints
 
   Objective:
   Implement `/health` (liveness) and `/health/ready` (readiness) per
@@ -241,7 +241,7 @@ configuration surface, and the doc set that every later phase will update.
 
 Introduce PostgreSQL, SQLAlchemy models, and Alembic. Seed users come later.
 
-- [ ] TASK-02-01 — Database engine, session, and base
+- [x] TASK-02-01 — Database engine, session, and base
 
   Objective:
   Provide the `db` layer described in `docs/ARCHITECTURE.md` §2.

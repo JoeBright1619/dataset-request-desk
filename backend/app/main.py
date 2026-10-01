@@ -2,17 +2,13 @@ from fastapi import APIRouter, FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
+from app.api.health import router as health_router
 from app.core.config import settings
 from app.core.errors import AppError
 
 app = FastAPI(title="Dataset Request Desk")
 
 api_router = APIRouter(prefix="/api/v1")
-
-
-@api_router.get("/health")
-async def health() -> dict[str, str]:
-    return {"status": "ok"}
 
 
 @app.exception_handler(AppError)
@@ -59,6 +55,7 @@ async def validation_error_handler(
     )
 
 
+app.include_router(health_router)
 app.include_router(api_router)
 
 
