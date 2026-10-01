@@ -24,7 +24,7 @@ and only starts once 1–9 are complete, tested, and documented.
 
 # CURRENT TASK
 
-TASK-07-01 — AnalyticsRepository
+TASK-08-01 — Auth flow (login, token storage, guards)
 
 Status: Not Done
 
@@ -834,7 +834,7 @@ Assignment creation, listing, release, and the concurrency guarantee.
 
 Aggregations in the database. No Python-side computation over large sets.
 
-- [ ] TASK-07-01 — AnalyticsRepository
+- [x] TASK-07-01 — AnalyticsRepository
 
   Objective:
   Implement the three aggregations from `docs/API.md` §6.1.
@@ -856,7 +856,7 @@ Aggregations in the database. No Python-side computation over large sets.
   Commit:
   feat(analytics): add aggregation repository
 
-- [ ] TASK-07-02 — Analytics endpoint
+- [x] TASK-07-02 — Analytics endpoint
 
   Objective:
   Implement `GET /analytics` per `docs/API.md` §6.1.
