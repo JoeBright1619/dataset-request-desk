@@ -24,7 +24,7 @@ and only starts once 1–9 are complete, tested, and documented.
 
 # CURRENT TASK
 
-TASK-02-02 — Models for all six tables
+TASK-02-03 — Alembic setup and initial migration
 
 Status: NOT STARTED
 
@@ -270,7 +270,7 @@ Introduce PostgreSQL, SQLAlchemy models, and Alembic. Seed users come later.
   Commit:
   feat(db): add engine, session, and transaction boundaries
 
-- [ ] TASK-02-02 — Models for all six tables
+- [x] TASK-02-02 — Models for all six tables
 
   Objective:
   Define the SQLAlchemy models matching `docs/DATA_MODEL.md`.
@@ -284,11 +284,21 @@ Introduce PostgreSQL, SQLAlchemy models, and Alembic. Seed users come later.
   - All indexes from `docs/DATA_MODEL.md` §5.
 
   Acceptance criteria:
-  - Models import cleanly.
-  - The partial unique index is declared on the model.
+  - Models import cleanly. ✓
+  - The partial unique index is declared on the model. ✓
+  - All 6 tables registered in Base.metadata. ✓
+  - All check constraints (role, status, quality, duration) present. ✓
+  - All keyset pagination indexes (4 on episodes, 3 on requests, etc.) present. ✓
+  - Passes ruff linting and formatting checks. ✓
 
   Files:
-  - `backend/app/models/`
+  - `backend/app/models/__init__.py`
+  - `backend/app/models/user.py`
+  - `backend/app/models/episode.py`
+  - `backend/app/models/request.py`
+  - `backend/app/models/assignment.py`
+  - `backend/app/models/request_status_history.py`
+  - `backend/app/models/refresh_token.py`
 
   Commit:
   feat(models): define schema for users, episodes, requests, assignments, history, tokens
