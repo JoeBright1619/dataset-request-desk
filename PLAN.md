@@ -24,7 +24,7 @@ and only starts once 1–9 are complete, tested, and documented.
 
 # CURRENT TASK
 
-TASK-05-02 — Request domain service (create + read)
+TASK-05-03 — Request state machine
 
 Status: Not Done
 
@@ -674,7 +674,7 @@ Request creation, listing, detail, and the single status-transition endpoint.
   Commit:
   feat(requests): add repository with cursor pagination and scoping
 
-- [ ] TASK-05-02 — Request domain service (create + read)
+- [x] TASK-05-02 — Request domain service (create + read)
 
   Objective:
   Implement `POST /requests`, `GET /requests`, `GET /requests/{id}`.
