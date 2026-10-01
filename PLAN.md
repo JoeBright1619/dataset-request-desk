@@ -24,7 +24,7 @@ and only starts once 1–9 are complete, tested, and documented.
 
 # CURRENT TASK
 
-TASK-04-05 — Import endpoints (API + CLI)
+TASK-05-02 — Request domain service (create + read)
 
 Status: Not Done
 
@@ -660,7 +660,7 @@ Episode domain, list and detail endpoints, and the shared import service.
 
 Request creation, listing, detail, and the single status-transition endpoint.
 
-- [ ] TASK-05-01 — Request repository
+- [x] TASK-05-01 — Request repository
 
   Objective:
   Data access for requests and status history.
