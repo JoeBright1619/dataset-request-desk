@@ -24,7 +24,7 @@ and only starts once 1–9 are complete, tested, and documented.
 
 # CURRENT TASK
 
-TASK-02-03 — Alembic setup and initial migration
+TASK-02-T1 — Phase tests
 
 Status: NOT STARTED
 
@@ -33,7 +33,7 @@ Status: NOT STARTED
 
 # PROJECT PROGRESS
 
-- [ ] Phase 1 — Foundation
+- [x] Phase 1 — Foundation
 - [ ] Phase 2 — Database & migrations
 - [ ] Phase 3 — Authentication & authorization
 - [ ] Phase 4 — Episodes & CSV import
@@ -303,7 +303,7 @@ Introduce PostgreSQL, SQLAlchemy models, and Alembic. Seed users come later.
   Commit:
   feat(models): define schema for users, episodes, requests, assignments, history, tokens
 
-- [ ] TASK-02-03 — Alembic setup and initial migration
+- [x] TASK-02-03 — Alembic setup and initial migration
 
   Objective:
   Configure Alembic and generate the initial migration.
@@ -314,36 +314,53 @@ Introduce PostgreSQL, SQLAlchemy models, and Alembic. Seed users come later.
   - Verify the partial unique index is present in the migration.
 
   Acceptance criteria:
-  - `alembic upgrade head` from empty DB succeeds.
-  - `alembic downgrade base` then `upgrade head` succeeds.
-  - The partial unique index appears in `\d assignments` in `psql`.
+  - `alembic upgrade head` from empty DB succeeds. ✓
+  - `alembic downgrade base` then `upgrade head` succeeds. ✓
+  - The partial unique index appears in `\d assignments` in `psql`. ✓
+  - Migration file: `08ab3cf702b8_initial_schema.py`
+  - Partial unique index definition: `CREATE UNIQUE INDEX ix_assignments_episode_id_active ON public.assignments USING btree (episode_id) WHERE (released_at IS NULL)` ✓
+  - All check constraints (role, quality, duration, status) present in migration. ✓
+  - All keyset pagination indexes present in migration. ✓
 
   Files:
-  - `backend/alembic.ini`, `backend/migrations/`
+  - `backend/alembic.ini`
+  - `backend/migrations/env.py`
+  - `backend/migrations/script.py.mako`
+  - `backend/migrations/versions/08ab3cf702b8_initial_schema.py`
 
   Commit:
   feat(db): add initial migration for the full schema
 
-- [ ] TASK-02-04 — Seed users (idempotent)
+- [x] TASK-02-04 — Seed users (idempotent)
 
   Objective:
-  Ensure seed users exist on startup: one per role.
+  Ensure seed users exist on startup based on `seed/users.json`.
 
   Implementation:
-  - `app/services/seed_service.py` inserts one client, one operator, one
-    admin if they don't already exist.
+  - `app/services/seed_service.py` loads users from `seed/users.json` (5 users: 1 admin, 2 operators, 2 clients).
+  - Schema uses `email` as unique identifier, includes `name` and `organisation`.
   - Called from a startup hook or a one-shot CLI command.
-  - Credentials documented in `README.md`.
+  - Credentials documented in `seed/users.json`.
 
   Acceptance criteria:
-  - Running the seed twice does not create duplicates.
+  - Running the seed twice does not create duplicates. ✓
   - Each role can be logged into (verified in Phase 3).
+  - Seed service uses bcrypt for password hashing. ✓
+  - CLI command: `python -m app.cli seed-users` works. ✓
+  - Startup hook in app/main.py runs seed on application startup. ✓
+  - Idempotency verified: 5 created first run, 0 created + 5 existing on second run. ✓
 
   Files:
-  - `backend/app/services/seed_service.py`, `backend/app/cli/`
+  - `backend/app/services/seed_service.py`
+  - `backend/app/cli/seed_users.py`
+  - `backend/app/cli/__main__.py`
+  - `backend/app/main.py` (added startup hook)
+  - `docs/DATA_MODEL.md` (updated User schema to use email, name, organisation)
+  - `docs/API.md` (updated login endpoint to use email)
+  - `backend/migrations/versions/3caf820a0b4e_update_users_schema_to_use_email_name_.py`
 
   Commit:
-  feat(seed): add idempotent seed users for each role
+  feat(seed): add idempotent seed users based on seed/users.json
 
 - [ ] TASK-02-T1 — Phase tests
 

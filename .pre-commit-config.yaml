@@ -20,6 +20,7 @@ repos:
           - alembic
           - uvicorn
           - pyjwt
+          - bcrypt
 
   - repo: https://github.com/PyCQA/bandit
     rev: 1.9.4

@@ -128,7 +128,7 @@ FastAPI's default `422` body is overridden so all errors match the envelope abov
 **Request**
 
 ```json
-{ "username": "alice", "password": "..." }
+{ "email": "alice@example.com", "password": "..." }
 ```
 
 **Response `200`**

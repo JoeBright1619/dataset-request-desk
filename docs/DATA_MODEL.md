@@ -36,16 +36,18 @@ Purpose: application accounts. Roles: `client`, `operator`, `admin`.
 | Column | Type | Null | Default | Notes |
 |---|---|---|---|---|
 | `id` | UUID | no | `gen_random_uuid()` | PK |
-| `username` | VARCHAR(64) | no | — | unique |
+| `email` | VARCHAR(255) | no | — | unique, primary identifier |
 | `password_hash` | VARCHAR(255) | no | — | bcrypt |
 | `role` | VARCHAR(16) | no | — | check: `client` / `operator` / `admin` |
+| `name` | VARCHAR(128) | no | — | user's display name |
+| `organisation` | VARCHAR(128) | yes | — | client organisation name |
 | `is_active` | BOOLEAN | no | `true` | deactivation revokes refresh tokens |
 | `created_at` | TIMESTAMPTZ | no | `now()` | |
 | `updated_at` | TIMESTAMPTZ | no | `now()` | |
 
 **Constraints**
 - PK on `id`
-- Unique on `username` (case-sensitive; usernames are stored lowercased by the application)
+- Unique on `email` (case-sensitive; emails are stored lowercased by the application)
 - Check: `role IN ('client', 'operator', 'admin')`
 
 **Indexes**
