@@ -8,10 +8,10 @@ import logging
 from pathlib import Path
 from typing import Any, TypedDict, cast
 
-import bcrypt
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.security import hash_password
 from app.models.user import User
 
 logger = logging.getLogger(__name__)
@@ -23,11 +23,6 @@ class SeedUser(TypedDict, total=False):
     role: str
     name: str
     organisation: str
-
-
-def hash_password(password: str) -> str:
-    """Hash a password using bcrypt."""
-    return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
 
 
 def load_seed_users() -> list[SeedUser]:
