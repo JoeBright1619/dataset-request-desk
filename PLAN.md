@@ -24,7 +24,7 @@ and only starts once 1–9 are complete, tested, and documented.
 
 # CURRENT TASK
 
-TASK-04-04 — EpisodeImportService
+TASK-04-05 — Import endpoints (API + CLI)
 
 Status: Not Done
 
@@ -585,7 +585,7 @@ Episode domain, list and detail endpoints, and the shared import service.
   Commit:
   feat(episodes): add list and detail endpoints
 
-- [ ] TASK-04-04 — EpisodeImportService
+- [x] TASK-04-04 — EpisodeImportService
 
   Objective:
   One shared importer used by API and CLI.
