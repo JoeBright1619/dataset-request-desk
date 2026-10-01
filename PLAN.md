@@ -24,7 +24,7 @@ and only starts once 1–9 are complete, tested, and documented.
 
 # CURRENT TASK
 
-TASK-02-D1 — Phase docs sync
+TASK-03-02 — Refresh-token storage and rotation
 
 Status: COMPLETE
 
@@ -402,7 +402,7 @@ Introduce PostgreSQL, SQLAlchemy models, and Alembic. Seed users come later.
 JWT access + refresh, role-based dependencies, and the object-level
 authorization helper used by every later phase.
 
-- [ ] TASK-03-01 — Password hashing and JWT utilities
+- [x] TASK-03-01 — Password hashing and JWT utilities
 
   Objective:
   Provide the security primitives.
@@ -418,7 +418,7 @@ authorization helper used by every later phase.
   Commit:
   feat(auth): add password hashing and JWT utilities
 
-- [ ] TASK-03-02 — Refresh-token storage and rotation
+- [x] TASK-03-02 — Refresh-token storage and rotation
 
   Objective:
   Store refresh tokens hashed, rotate on use, revoke on reuse.
