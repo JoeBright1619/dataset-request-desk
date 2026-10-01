@@ -1,13 +1,23 @@
 """HTTP tests for the authentication endpoints."""
 
+from typing import Annotated
 from uuid import uuid4
 
 import pytest
+from app.api.dependencies import require_roles
 from app.core.security import hash_password
 from app.db.session import get_session
 from app.main import app
 from app.models.user import User
+from fastapi import Depends
 from httpx import ASGITransport, AsyncClient
+
+AdminUser = Annotated[User, Depends(require_roles("admin"))]
+
+
+@app.get("/test-admin-only")
+async def admin_only_route(user: AdminUser) -> dict[str, str]:
+    return {"email": user.email}
 
 
 async def client_for_session(db_session) -> AsyncClient:
@@ -117,6 +127,48 @@ async def test_refresh_and_logout_endpoints(db_session):
         )
         assert rejected_refresh.status_code == 401
         assert rejected_refresh.json()["error"]["code"] == "AUTHENTICATION_REQUIRED"
+    finally:
+        await client.aclose()
+        app.dependency_overrides.clear()
+
+
+@pytest.mark.asyncio
+async def test_missing_or_invalid_access_token_returns_authentication_required(
+    db_session,
+):
+    client = await client_for_session(db_session)
+    try:
+        missing = await client.get("/api/v1/auth/me")
+        invalid = await client.get(
+            "/api/v1/auth/me",
+            headers={"Authorization": "Bearer invalid-token"},
+        )
+        assert missing.status_code == 401
+        assert invalid.status_code == 401
+        assert missing.json()["error"]["code"] == "AUTHENTICATION_REQUIRED"
+        assert invalid.json()["error"]["code"] == "AUTHENTICATION_REQUIRED"
+    finally:
+        await client.aclose()
+        app.dependency_overrides.clear()
+
+
+@pytest.mark.asyncio
+async def test_require_roles_rejects_a_user_with_the_wrong_role(db_session):
+    user = await create_user(db_session)
+    client = await client_for_session(db_session)
+    try:
+        login_response = await client.post(
+            "/api/v1/auth/login",
+            json={"email": user.email, "password": "correct-password"},
+        )
+        response = await client.get(
+            "/test-admin-only",
+            headers={
+                "Authorization": f"Bearer {login_response.json()['access_token']}"
+            },
+        )
+        assert response.status_code == 403
+        assert response.json()["error"]["code"] == "FORBIDDEN"
     finally:
         await client.aclose()
         app.dependency_overrides.clear()

@@ -1,15 +1,14 @@
 """HTTP endpoints for authentication and token lifecycle management."""
 
 from typing import Annotated
-from uuid import UUID
 
-import jwt
-from fastapi import APIRouter, Body, Depends, Header, Response
+from fastapi import APIRouter, Body, Depends, Response
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.errors import AuthenticationRequiredError, InvalidCredentialsError
-from app.core.security import decode_access_token, verify_password
+from app.api.dependencies import get_current_user
+from app.core.errors import InvalidCredentialsError
+from app.core.security import verify_password
 from app.db.session import get_session
 from app.models.user import User
 from app.schemas.auth import (
@@ -25,6 +24,7 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 OPTIONAL_LOGOUT_BODY = Body(default_factory=LogoutRequest)
 
 Session = Annotated[AsyncSession, Depends(get_session)]
+CurrentUser = Annotated[User, Depends(get_current_user)]
 
 
 def token_response(tokens: TokenPair) -> TokenResponse:
@@ -34,27 +34,6 @@ def token_response(tokens: TokenPair) -> TokenResponse:
         token_type=tokens.token_type,
         expires_in=tokens.expires_in,
     )
-
-
-async def authenticated_user(authorization: str | None, session: AsyncSession) -> User:
-    """Load the active user named by a valid bearer token."""
-    if authorization is None:
-        raise AuthenticationRequiredError()
-
-    scheme, _, access_token = authorization.partition(" ")
-    if scheme.lower() != "bearer" or not access_token:
-        raise AuthenticationRequiredError()
-
-    try:
-        claims = decode_access_token(access_token)
-        user_id = UUID(claims["sub"])
-    except (jwt.InvalidTokenError, KeyError, TypeError, ValueError):
-        raise AuthenticationRequiredError() from None
-
-    user = await session.get(User, user_id)
-    if user is None or not user.is_active:
-        raise AuthenticationRequiredError()
-    return user
 
 
 @router.post("/login", response_model=TokenResponse)
@@ -85,11 +64,10 @@ async def refresh(payload: RefreshRequest, session: Session) -> TokenResponse:
 @router.post("/logout", status_code=204)
 async def logout(
     session: Session,
+    user: CurrentUser,
     payload: LogoutRequest = OPTIONAL_LOGOUT_BODY,
-    authorization: Annotated[str, Header()] = "",
 ) -> Response:
     """Revoke the supplied refresh token, or all tokens for the caller."""
-    user = await authenticated_user(authorization, session)
     await AuthService(session).logout(
         user.id,
         payload.refresh_token,
@@ -99,10 +77,7 @@ async def logout(
 
 @router.get("/me", response_model=CurrentUserResponse)
 async def me(
-    session: Session,
-    authorization: Annotated[str, Header()] = "",
+    user: CurrentUser,
 ) -> CurrentUserResponse:
     """Return the caller's current user profile."""
-    return CurrentUserResponse.model_validate(
-        await authenticated_user(authorization, session)
-    )
+    return CurrentUserResponse.model_validate(user)
