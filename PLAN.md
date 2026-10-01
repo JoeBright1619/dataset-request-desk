@@ -24,7 +24,7 @@ and only starts once 1–9 are complete, tested, and documented.
 
 # CURRENT TASK
 
-TASK-01-03 — Error hierarchy and exception handlers
+TASK-02-01 — Database engine, session, and base
 
 Status: IN PROGRESS
 
@@ -103,7 +103,7 @@ configuration surface, and the doc set that every later phase will update.
   Commit:
   feat(backend): bootstrap FastAPI app with layered layout
 
-- [ ] TASK-01-03 — Error hierarchy and exception handlers
+- [x] TASK-01-03 — Error hierarchy and exception handlers
 
   Objective:
   Implement the single error envelope described in `docs/API.md` §0.4.
@@ -128,7 +128,7 @@ configuration surface, and the doc set that every later phase will update.
   Commit:
   feat(core): add structured error envelope and handlers
 
-- [ ] TASK-01-04 — Structured logging middleware
+- [x] TASK-01-04 — Structured logging middleware
 
   Objective:
   Emit one structured log line per request, per `GUIDE.md` §5.
