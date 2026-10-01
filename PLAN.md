@@ -24,7 +24,7 @@ and only starts once 1–9 are complete, tested, and documented.
 
 # CURRENT TASK
 
-TASK-05-04 — Status transition endpoint
+TASK-06-02 — Assignment endpoints
 
 Status: Not Done
 
@@ -712,7 +712,7 @@ Request creation, listing, detail, and the single status-transition endpoint.
   Commit:
   feat(requests): enforce status transitions with row lock
 
-- [ ] TASK-05-04 — Status transition endpoint
+- [x] TASK-05-04 — Status transition endpoint
 
   Objective:
   Implement `POST /requests/{id}/status` per `docs/API.md` §4.4.
@@ -762,7 +762,7 @@ Request creation, listing, detail, and the single status-transition endpoint.
 
 Assignment creation, listing, release, and the concurrency guarantee.
 
-- [ ] TASK-06-01 — Assignment repository
+- [x] TASK-06-01 — Assignment repository
 
   Objective:
   Data access for assignments.
