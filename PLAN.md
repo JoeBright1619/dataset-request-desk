@@ -24,7 +24,7 @@ and only starts once 1–9 are complete, tested, and documented.
 
 # CURRENT TASK
 
-TASK-03-05 — Object-level authorization helper
+TASK-03-06 — User management endpoints
 
 Status: COMPLETE
 
@@ -481,7 +481,7 @@ authorization helper used by every later phase.
   Commit:
   feat(auth): add object-level authorization helper
 
-- [ ] TASK-03-06 — User management endpoints
+- [x] TASK-03-06 — User management endpoints
 
   Objective:
   Implement `GET/POST/GET/PATCH /users` per `docs/API.md` §2. Admin-only.
