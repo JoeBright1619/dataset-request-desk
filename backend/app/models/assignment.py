@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 
-from sqlalchemy import ForeignKey, Index, String, func
+from sqlalchemy import DateTime, ForeignKey, Index, String, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.base import Base
@@ -26,7 +26,10 @@ class Assignment(Base):
     assigned_at: Mapped[datetime] = mapped_column(
         default=func.now(), server_default=func.now()
     )
-    released_at: Mapped[datetime | None] = mapped_column(nullable=True, default=None)
+    released_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+    )
     release_reason: Mapped[str | None] = mapped_column(String(255), nullable=True)
 
     # Indexes and constraints

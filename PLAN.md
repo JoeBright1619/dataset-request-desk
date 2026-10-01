@@ -24,7 +24,7 @@ and only starts once 1–9 are complete, tested, and documented.
 
 # CURRENT TASK
 
-TASK-02-T1 — Phase tests
+TASK-02-D1 — Phase docs sync
 
 Status: NOT STARTED
 
@@ -362,7 +362,7 @@ Introduce PostgreSQL, SQLAlchemy models, and Alembic. Seed users come later.
   Commit:
   feat(seed): add idempotent seed users based on seed/users.json
 
-- [ ] TASK-02-T1 — Phase tests
+- [x] TASK-02-T1 — Phase tests
 
   Objective:
   Verify the schema and seed behaviour.
