@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 
-from sqlalchemy import CheckConstraint, Index, String, func
+from sqlalchemy import CheckConstraint, DateTime, Index, String, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.base import Base
@@ -21,10 +21,13 @@ class User(Base):
     organisation: Mapped[str | None] = mapped_column(String(128), nullable=True)
     is_active: Mapped[bool] = mapped_column(default=True, server_default="true")
     created_at: Mapped[datetime] = mapped_column(
-        default=func.now(), server_default=func.now()
+        DateTime(timezone=True), default=func.now(), server_default=func.now()
     )
     updated_at: Mapped[datetime] = mapped_column(
-        default=func.now(), server_default=func.now(), onupdate=func.now()
+        DateTime(timezone=True),
+        default=func.now(),
+        server_default=func.now(),
+        onupdate=func.now(),
     )
 
     # Constraints
@@ -36,9 +39,8 @@ class User(Base):
         # Indexes
         Index(
             "ix_users_created_at_id",
-            "created_at",
-            "id",
-            postgresql_ops={"created_at": "DESC", "id": "DESC"},
+            created_at.desc(),
+            id.desc(),
         ),
         Index("ix_users_role", "role"),
     )

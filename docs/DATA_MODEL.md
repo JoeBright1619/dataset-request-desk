@@ -138,6 +138,7 @@ Purpose: links an episode to a request. Soft-released, not hard-deleted.
 | `assigned_by` | UUID | no | — | FK → `users.id` |
 | `assigned_at` | TIMESTAMPTZ | no | `now()` | |
 | `released_at` | TIMESTAMPTZ | yes | — | null = active; set = released |
+| `release_reason` | VARCHAR(255) | yes | — | optional reason for release |
 
 **Constraints**
 - PK on `id`
@@ -193,6 +194,7 @@ Purpose: server-side storage for refresh-token rotation and revocation.
 |---|---|---|---|---|
 | `id` | UUID | no | `gen_random_uuid()` | PK |
 | `user_id` | UUID | no | — | FK → `users.id` |
+| `family_id` | UUID | no | `gen_random_uuid()` | identifies a rotation chain |
 | `token_hash` | VARCHAR(255) | no | — | SHA-256 of the opaque token |
 | `issued_at` | TIMESTAMPTZ | no | `now()` | |
 | `expires_at` | TIMESTAMPTZ | no | — | |
@@ -206,6 +208,7 @@ Purpose: server-side storage for refresh-token rotation and revocation.
 
 **Indexes**
 - `(user_id, expires_at DESC)` — list active tokens for a user (logout-everywhere)
+- `(family_id)` — revoke a reused token's rotation chain
 - `(token_hash)` — the unique index above; lookup at `/auth/refresh`
 
 **Deletion.** Tokens are never hard-deleted in the MVP. Expired rows can be pruned by a future background job (documented as out of scope).
@@ -217,7 +220,7 @@ Purpose: server-side storage for refresh-token rotation and revocation.
 The single most important constraint in the schema:
 
 ```sql
-CREATE UNIQUE INDEX assignments_active_episode_uniq
+CREATE UNIQUE INDEX ix_assignments_episode_id_active
     ON assignments (episode_id)
     WHERE released_at IS NULL;
 ```
@@ -266,9 +269,10 @@ If the domain later requires robots or operators to be managed entities, the mig
 | `request_status_history` | `(request_id, changed_at DESC)` | request history |
 | `request_status_history` | `(changed_at DESC)` | global audit |
 | `refresh_tokens` | `(user_id, expires_at DESC)` | logout-everywhere |
+| `refresh_tokens` | `(family_id)` | revoke a reused token's rotation chain |
 | `refresh_tokens` | unique on `(token_hash)` | token lookup |
 
-Uniqueness indexes (`episode_id` on episodes, `username` on users, `token_hash` on refresh_tokens) are implied by their UNIQUE constraints and are not repeated here.
+Uniqueness indexes (`episode_id` on episodes, `email` on users, `token_hash` on refresh_tokens) are implied by their UNIQUE constraints and are not repeated here.
 
 ---
 

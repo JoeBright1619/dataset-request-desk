@@ -1,7 +1,16 @@
 import uuid
 from datetime import datetime
 
-from sqlalchemy import CheckConstraint, ForeignKey, Index, Integer, String, func
+from sqlalchemy import (
+    CheckConstraint,
+    DateTime,
+    ForeignKey,
+    Index,
+    Integer,
+    String,
+    Text,
+    func,
+)
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.base import Base
@@ -18,15 +27,23 @@ class Request(Base):
         ForeignKey("users.id", ondelete="RESTRICT"), nullable=False
     )
     task_name: Mapped[str] = mapped_column(String(128), nullable=False)
-    required_count: Mapped[int] = mapped_column(Integer, nullable=False)
-    quality_filter: Mapped[str] = mapped_column(String(16), nullable=False)
-    deadline: Mapped[datetime] = mapped_column(nullable=False)
-    status: Mapped[str] = mapped_column(String(16), nullable=False)
+    episodes_requested: Mapped[int] = mapped_column(Integer, nullable=False)
+    deadline: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    notes: Mapped[str | None] = mapped_column(Text, nullable=True)
+    status: Mapped[str] = mapped_column(
+        String(16), default="submitted", server_default="submitted", nullable=False
+    )
     created_at: Mapped[datetime] = mapped_column(
-        default=func.now(), server_default=func.now()
+        DateTime(timezone=True), default=func.now(), server_default=func.now()
     )
     updated_at: Mapped[datetime] = mapped_column(
-        default=func.now(), server_default=func.now(), onupdate=func.now()
+        DateTime(timezone=True),
+        default=func.now(),
+        server_default=func.now(),
+        onupdate=func.now(),
+    )
+    delivered_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
     )
 
     # Constraints
@@ -37,33 +54,26 @@ class Request(Base):
             name="request_status_check",
         ),
         CheckConstraint(
-            "quality_filter IN ('good', 'usable', 'bad')",
-            name="request_quality_filter_check",
-        ),
-        CheckConstraint(
-            "required_count > 0",
-            name="request_required_count_positive_check",
+            "episodes_requested BETWEEN 1 AND 100000",
+            name="request_episodes_requested_range_check",
         ),
         # Indexes for keyset pagination
         Index(
             "ix_requests_created_at_id",
-            "created_at",
-            "id",
-            postgresql_ops={"created_at": "DESC", "id": "DESC"},
+            created_at.desc(),
+            id.desc(),
         ),
         Index(
             "ix_requests_client_id_created_at_id",
             "client_id",
-            "created_at",
-            "id",
-            postgresql_ops={"created_at": "DESC", "id": "DESC"},
+            created_at.desc(),
+            id.desc(),
         ),
         Index(
             "ix_requests_status_created_at_id",
             "status",
-            "created_at",
-            "id",
-            postgresql_ops={"created_at": "DESC", "id": "DESC"},
+            created_at.desc(),
+            id.desc(),
         ),
     )
 

@@ -24,7 +24,7 @@ class Assignment(Base):
         ForeignKey("users.id", ondelete="RESTRICT"), nullable=False
     )
     assigned_at: Mapped[datetime] = mapped_column(
-        default=func.now(), server_default=func.now()
+        DateTime(timezone=True), default=func.now(), server_default=func.now()
     )
     released_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True),
@@ -38,15 +38,13 @@ class Assignment(Base):
         Index(
             "ix_assignments_request_id_assigned_at_episode_id",
             "request_id",
-            "assigned_at",
-            "episode_id",
-            postgresql_ops={"assigned_at": "DESC", "episode_id": "DESC"},
+            assigned_at.desc(),
+            episode_id.desc(),
         ),
         Index(
             "ix_assignments_assigned_at_episode_id",
-            "assigned_at",
-            "episode_id",
-            postgresql_ops={"assigned_at": "DESC", "episode_id": "DESC"},
+            assigned_at.desc(),
+            episode_id.desc(),
         ),
         # **CRITICAL: Partial unique index** - only one active assignment per episode
         Index(

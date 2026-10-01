@@ -42,76 +42,72 @@ HTTP/JSON.
 
 ## Prerequisites
 
-- Docker and Docker Compose (for the one-command startup)
 - Python 3.11+ (for running the backend and tests outside Docker)
-- Node 20+ (for running the frontend outside Docker)
+- PostgreSQL 16+ with the `pgcrypto` extension available
+- Poetry 2.0+
 
-Everything below assumes Docker Compose is available. Running outside Docker
-is documented at the bottom of this section.
+Docker Compose and the frontend startup flow are planned for later phases.
 
 ---
 
 ## Quick Start
 
-From a clean clone:
+From a clean clone, create a database named `dataset_request_desk`, then:
 
 ```bash
-docker compose up
+cp .env.example .env
+cd backend
+poetry install
+poetry run alembic upgrade head
+poetry run python -m app.cli seed-users
+poetry run uvicorn app.main:app --reload
 ```
 
-That brings up:
-
-- PostgreSQL on `localhost:5432`
-- Backend on `localhost:8000` (migrations and seed run automatically on first
-  boot)
-- Frontend on `localhost:5173`
-
-Open `http://localhost:5173` and log in with one of the seed credentials below.
-
-The first startup imports `seed/episodes.csv`. Subsequent startups are
-idempotent — no duplicate episodes, no duplicate users.
-
-To reset the environment completely:
-
-```bash
-docker compose down -v
-docker compose up
-```
+The backend starts at `http://localhost:8000`. Seed users are idempotent, so
+running the seed command again creates no duplicates.
 
 ---
 
 ## Database & Migrations
 
-Migrations run automatically on backend startup inside the Compose stack. To
-run them manually against a running database:
+Run migrations from `backend/` after setting `DATABASE_URL` in the root `.env`:
 
 ```bash
-docker compose exec backend alembic upgrade head
+poetry run alembic upgrade head
 ```
 
 To create a new migration during development:
 
 ```bash
-docker compose exec backend alembic revision --autogenerate -m "add <thing>"
+poetry run alembic revision --autogenerate -m "add <thing>"
 ```
 
 Every schema change goes through Alembic. See `GUIDE.md` §2 for the migration
 rules.
 
+To seed the initial users manually:
+
+```bash
+poetry run python -m app.cli seed-users
+```
+
 ---
 
 ## Seed Credentials
 
-The first startup seeds one user per role. **These are for local development
-only.** Override them via environment variables before deploying anywhere.
+The backend startup task and the manual seed command load these predefined
+accounts from `seed/users.json`. **They are for local development only.** Edit
+that file before deploying anywhere.
 
-| Role     | Username   | Password         |
-|----------|------------|------------------|
-| admin    | `admin`    | `admin-password` |
-| operator | `operator` | `operator-pass`  |
-| client   | `client`   | `client-pass`    |
+| Role | Email | Password |
+|---|---|---|
+| admin | `admin@example.com` | `admin123` |
+| operator | `ops1@example.com` | `ops123` |
+| operator | `ops2@example.com` | `ops123` |
+| client | `client-a@example.com` | `client123` |
+| client | `client-b@example.com` | `client123` |
 
-Change these in production. See `.env.example` for the variables.
+Use different credentials in production.
 
 ---
 

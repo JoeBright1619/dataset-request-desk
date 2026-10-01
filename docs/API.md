@@ -187,7 +187,8 @@ If omitted, all refresh tokens for the caller are revoked.
 ```json
 {
   "id": "9d8e7f6a-...",
-  "username": "alice",
+  "email": "alice@example.com",
+  "name": "Alice Example",
   "role": "operator",
   "is_active": true,
   "created_at": "2026-01-04T08:00:00Z"
@@ -215,12 +216,12 @@ All endpoints require role `admin`.
 **Request**
 
 ```json
-{ "username": "bob", "password": "...", "role": "operator" }
+{ "email": "bob@example.com", "name": "Bob Example", "password": "...", "role": "operator" }
 ```
 
 **Response `201`** — created user (no password field).
 
-**Errors:** `409 VALIDATION_ERROR` (username exists). `422 VALIDATION_ERROR`.
+**Errors:** `409 VALIDATION_ERROR` (email exists). `422 VALIDATION_ERROR`.
 
 ---
 

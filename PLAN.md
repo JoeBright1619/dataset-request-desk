@@ -26,7 +26,7 @@ and only starts once 1–9 are complete, tested, and documented.
 
 TASK-02-D1 — Phase docs sync
 
-Status: NOT STARTED
+Status: COMPLETE
 
 
 ---
@@ -34,7 +34,7 @@ Status: NOT STARTED
 # PROJECT PROGRESS
 
 - [x] Phase 1 — Foundation
-- [ ] Phase 2 — Database & migrations
+- [x] Phase 2 — Database & migrations
 - [ ] Phase 3 — Authentication & authorization
 - [ ] Phase 4 — Episodes & CSV import
 - [ ] Phase 5 — Requests & state machine
@@ -382,7 +382,7 @@ Introduce PostgreSQL, SQLAlchemy models, and Alembic. Seed users come later.
   Commit:
   test(db): cover schema constraints and seed idempotency
 
-- [ ] TASK-02-D1 — Phase docs sync
+- [x] TASK-02-D1 — Phase docs sync
 
   Objective:
   Confirm migration and seed instructions are documented.

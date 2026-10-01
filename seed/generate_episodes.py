@@ -45,7 +45,7 @@ for i in range(n):
             f"EP-{100000 + i}",
             random.choice(robots),
             random.choice(tasks),
-            rec.strftime("%Y-%m-%dT%H:%M:%S"),
+            rec.strftime("%Y-%m-%dT%H:%M:%SZ"),
             random.randint(8, 120),
             random.choice(ops),
             random.choice(quality),

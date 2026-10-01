@@ -46,7 +46,7 @@ async def test_partial_unique_index_prevents_duplicate_active_assignments(db_ses
         task_name="test_task",
         robot_id="robot-1",
         quality="good",
-        recorded_at=datetime(2026, 1, 1, 12, 0, 0),
+        recorded_at=datetime(2026, 1, 1, 12, 0, 0, tzinfo=UTC),
         duration_seconds=120,
     )
     session.add(episode)
@@ -66,9 +66,8 @@ async def test_partial_unique_index_prevents_duplicate_active_assignments(db_ses
     request = Request(
         client_id=client.id,
         task_name="test_task",
-        quality_filter="good",
-        required_count=1,
-        deadline=datetime(2026, 12, 31, 23, 59, 59),
+        episodes_requested=1,
+        deadline=datetime(2026, 12, 31, 23, 59, 59, tzinfo=UTC),
         status="submitted",
     )
     session.add(request)
@@ -127,7 +126,7 @@ async def test_release_then_reassign_succeeds(db_session):
         task_name="test_task2",
         robot_id="robot-2",
         quality="good",
-        recorded_at=datetime(2026, 1, 1, 13, 0, 0),
+        recorded_at=datetime(2026, 1, 1, 13, 0, 0, tzinfo=UTC),
         duration_seconds=150,
     )
     session.add(episode)
@@ -146,9 +145,8 @@ async def test_release_then_reassign_succeeds(db_session):
     request1 = Request(
         client_id=client.id,
         task_name="test_task2",
-        quality_filter="good",
-        required_count=1,
-        deadline=datetime(2026, 12, 31, 23, 59, 59),
+        episodes_requested=1,
+        deadline=datetime(2026, 12, 31, 23, 59, 59, tzinfo=UTC),
         status="submitted",
     )
     session.add(request1)
@@ -171,9 +169,8 @@ async def test_release_then_reassign_succeeds(db_session):
     request2 = Request(
         client_id=client.id,
         task_name="test_task2",
-        quality_filter="good",
-        required_count=1,
-        deadline=datetime(2026, 12, 31, 23, 59, 59),
+        episodes_requested=1,
+        deadline=datetime(2026, 12, 31, 23, 59, 59, tzinfo=UTC),
         status="submitted",
     )
     session.add(request2)
