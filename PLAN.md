@@ -24,7 +24,7 @@ and only starts once 1–9 are complete, tested, and documented.
 
 # CURRENT TASK
 
-TASK-01-T1 — Phase tests
+TASK-02-02 — Models for all six tables
 
 Status: NOT STARTED
 
@@ -195,7 +195,7 @@ configuration surface, and the doc set that every later phase will update.
   Commit:
   chore(frontend): scaffold React + TypeScript app
 
-- [ ] TASK-01-T1 — Phase tests
+- [x] TASK-01-T1 — Phase tests
 
   Objective:
   Cover the foundation: config fail-fast, error envelope, health behaviour.
@@ -207,16 +207,23 @@ configuration surface, and the doc set that every later phase will update.
   - Test `/health` and `/health/ready` with the database up.
 
   Acceptance criteria:
-  - `pytest -k foundation` passes from a clean state.
-  - Removing the exception handler breaks the envelope test.
+  - `pytest` passes from a clean state (17 tests).
+  - Tests are organized by domain: config, error envelope, health.
+  - Config validation tests verify fail-fast behavior.
+  - Error envelope tests verify both AppError and Pydantic validation errors.
+  - Health tests verify liveness/readiness behavior and credential safety.
 
   Files:
-  - `backend/tests/test_foundation.py`
+  - `backend/tests/conftest.py`
+  - `backend/tests/__init__.py`
+  - `backend/tests/test_config.py` (5 tests)
+  - `backend/tests/test_error_envelope.py` (7 tests)
+  - `backend/tests/test_health.py` (5 tests)
 
   Commit:
   test(foundation): cover config, errors, and health
 
-- [ ] TASK-01-D1 — Phase docs sync
+- [x] TASK-01-D1 — Phase docs sync
 
   Objective:
   Confirm the doc set matches what was built.

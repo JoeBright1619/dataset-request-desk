@@ -124,11 +124,12 @@ cd backend
 pytest
 ```
 
-The backend tests run against a real PostgreSQL instance. Point them at the
-Compose database with:
+Most tests use FastAPI's TestClient and run without external dependencies. The
+health readiness test does verify database connectivity; ensure your `.env` file
+has a valid `DATABASE_URL`:
 
 ```bash
-DATABASE_URL=postgresql+psycopg://postgres:postgres@localhost:5432/dataset_desk pytest
+DATABASE_URL=postgresql+asyncpg://postgres:postgres@localhost:5432/dataset_request_desk pytest
 ```
 
 Frontend:
