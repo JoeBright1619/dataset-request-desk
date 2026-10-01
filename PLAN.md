@@ -24,7 +24,7 @@ and only starts once 1–9 are complete, tested, and documented.
 
 # CURRENT TASK
 
-TASK-03-06 — User management endpoints
+TASK-04-01 — Episode repository
 
 Status: COMPLETE
 
@@ -35,7 +35,7 @@ Status: COMPLETE
 
 - [x] Phase 1 — Foundation
 - [x] Phase 2 — Database & migrations
-- [ ] Phase 3 — Authentication & authorization
+- [x] Phase 3 — Authentication & authorization
 - [ ] Phase 4 — Episodes & CSV import
 - [ ] Phase 5 — Requests & state machine
 - [ ] Phase 6 — Assignments
@@ -494,7 +494,7 @@ authorization helper used by every later phase.
   Commit:
   feat(users): add admin user management endpoints
 
-- [ ] TASK-03-T1 — Phase tests
+- [x] TASK-03-T1 — Phase tests
 
   Objective:
   Cover authentication, role, and object-level authorization.
@@ -516,7 +516,7 @@ authorization helper used by every later phase.
   Commit:
   test(auth): cover roles, ownership, and token rotation
 
-- [ ] TASK-03-D1 — Phase docs sync
+- [x] TASK-03-D1 — Phase docs sync
 
   Objective:
   Confirm the auth contract in `docs/API.md` §1–2 matches the implementation.
