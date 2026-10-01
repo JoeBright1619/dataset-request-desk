@@ -5,6 +5,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
 from app.api.health import router as health_router
+from app.api.router import router as versioned_api_router
 from app.core.config import settings
 from app.core.errors import AppError
 
@@ -81,6 +82,7 @@ async def validation_error_handler(
 
 
 app.include_router(health_router)
+api_router.include_router(versioned_api_router)
 app.include_router(api_router)
 
 

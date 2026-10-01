@@ -51,3 +51,18 @@ class RefreshTokenRepository:
             .values(revoked_at=revoked_at)
         )
         await self._session.flush()
+
+    async def revoke_for_user(
+        self,
+        user_id: UUID,
+        revoked_at: datetime,
+        token_hash: str | None = None,
+    ) -> None:
+        statement = update(RefreshToken).where(
+            RefreshToken.user_id == user_id,
+            RefreshToken.revoked_at.is_(None),
+        )
+        if token_hash is not None:
+            statement = statement.where(RefreshToken.token_hash == token_hash)
+        await self._session.execute(statement.values(revoked_at=revoked_at))
+        await self._session.flush()

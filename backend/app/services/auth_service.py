@@ -4,7 +4,7 @@ import hashlib
 import secrets
 from dataclasses import dataclass
 from datetime import UTC, datetime
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -94,4 +94,15 @@ class AuthService:
         return TokenPair(
             access_token=create_access_token(user.id, user.role),
             refresh_token=next_refresh_token,
+        )
+
+    async def logout(self, user_id: UUID, refresh_token: str | None = None) -> None:
+        """Revoke one supplied refresh token or every token for the user."""
+        token_hash = (
+            hash_refresh_token(refresh_token) if refresh_token is not None else None
+        )
+        await self._refresh_tokens.revoke_for_user(
+            user_id,
+            datetime.now(UTC),
+            token_hash,
         )
