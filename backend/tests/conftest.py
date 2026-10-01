@@ -12,8 +12,6 @@ from sqlalchemy.ext.asyncio import (
 )
 from sqlalchemy.pool import NullPool
 
-pytest_plugins = ("pytest_asyncio",)
-
 
 @pytest.fixture(scope="session")
 def anyio_backend():

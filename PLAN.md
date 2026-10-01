@@ -604,7 +604,7 @@ Episode domain, list and detail endpoints, and the shared import service.
   Commit:
   feat(episodes): add shared CSV import service
 
-- [ ] TASK-04-05 — Import endpoints (API + CLI)
+- [x] TASK-04-05 — Import endpoints (API + CLI)
 
   Objective:
   Wire the service to `POST /episodes/import` and

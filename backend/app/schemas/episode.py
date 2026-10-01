@@ -32,3 +32,17 @@ class EpisodeListResponse(BaseModel):
     has_more: bool
     has_prev: bool
     limit: int
+
+
+class EpisodeImportRowError(BaseModel):
+    row: int
+    reason: str
+    raw: dict[str, str | None]
+
+
+class EpisodeImportResponse(BaseModel):
+    imported: int
+    skipped_duplicates: int
+    invalid: int
+    errors: list[EpisodeImportRowError]
+    errors_truncated: bool
