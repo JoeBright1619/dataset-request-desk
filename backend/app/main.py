@@ -5,7 +5,6 @@ from fastapi.responses import JSONResponse
 from app.core.config import settings
 from app.core.errors import AppError
 
-
 app = FastAPI(title="Dataset Request Desk")
 
 api_router = APIRouter(prefix="/api/v1")
@@ -61,7 +60,6 @@ async def validation_error_handler(
 
 
 app.include_router(api_router)
-
 
 
 __all__ = ["app", "settings"]
