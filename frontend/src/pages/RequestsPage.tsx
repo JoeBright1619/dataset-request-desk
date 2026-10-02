@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { get, clearTokens, ApiClientError } from '../api/client'
+import { useAuth } from '../context/AuthContext'
 import { Request } from '../api/types'
 
 function RequestsPage() {
@@ -8,6 +9,7 @@ function RequestsPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const navigate = useNavigate()
+  const { logout } = useAuth()   
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -34,8 +36,8 @@ function RequestsPage() {
   }, [navigate])
 
   const handleLogout = () => {
-    clearTokens()
-    navigate('/login')
+    logout();
+    navigate('/login');
   }
 
   if (loading) {

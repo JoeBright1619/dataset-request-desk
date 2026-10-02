@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { get, clearTokens, ApiClientError } from '../api/client'
+import { useAuth } from '../context/AuthContext'
 import { Episode } from '../api/types'
 
 function EpisodesPage() {
@@ -34,8 +35,9 @@ function EpisodesPage() {
   }, [navigate])
 
   const handleLogout = () => {
-    clearTokens()
-    navigate('/login')
+    const { logout } = useAuth();
+    logout();
+    navigate('/login');
   }
 
   if (loading) {

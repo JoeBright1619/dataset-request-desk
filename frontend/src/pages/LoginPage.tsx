@@ -1,14 +1,19 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { post, setTokens, ApiClientError } from '../api/client'
-import { LoginRequest, LoginResponse } from '../api/types'
+import { Navigate, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 function LoginPage() {
-  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+  const { login, isAuthenticated } = useAuth()
+
+  // If already logged in, redirect to the default page (requests)
+  if (isAuthenticated) {
+    return <Navigate to="/requests" replace />
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -16,18 +21,12 @@ function LoginPage() {
     setLoading(true)
 
     try {
-      const response = await post<LoginResponse>('/auth/login', {
-        username,
-        password,
-      } as LoginRequest, { skipAuth: true })
-
-      // Store tokens
-      setTokens(response.access_token, response.refresh_token)
+      await login(email, password)
 
       // Navigate to requests page
       navigate('/requests')
-    } catch (err) {
-      if (err instanceof ApiClientError) {
+    } catch (err: any) {
+      if (err?.code) {
         setError(`${err.code}: ${err.message}`)
       } else {
         setError('An unexpected error occurred')
@@ -43,14 +42,14 @@ function LoginPage() {
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: '15px' }}>
-          <label htmlFor="username" style={{ display: 'block', marginBottom: '5px' }}>
-            Username
+          <label htmlFor="email" style={{ display: 'block', marginBottom: '5px' }}>
+            Email
           </label>
           <input
             type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
             style={{ width: '100%', padding: '8px', fontSize: '14px' }}
           />

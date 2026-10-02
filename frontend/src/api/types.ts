@@ -12,7 +12,7 @@ export interface ApiResponse<T> {
 
 // Auth types
 export interface LoginRequest {
-  username: string
+  email: string
   password: string
 }
 

@@ -24,7 +24,7 @@ and only starts once 1–9 are complete, tested, and documented.
 
 # CURRENT TASK
 
-TASK-08-01 — Auth flow (login, token storage, guards)
+TASK-08-02 — Client: requests page
 
 Status: Not Done
 
@@ -901,7 +901,7 @@ Aggregations in the database. No Python-side computation over large sets.
 
 Keep it small. Functional correctness over polish.
 
-- [ ] TASK-08-01 — Auth flow (login, token storage, guards)
+- [x] TASK-08-01 — Auth flow (login, token storage, guards)
 
   Objective:
   Login page, token storage, refresh on 401, and route guards by role.

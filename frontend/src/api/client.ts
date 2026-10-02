@@ -1,4 +1,5 @@
 import { ApiError } from './types'
+import { RefreshRequest, RefreshResponse } from './types'
 
 const API_BASE_URL = '/api/v1'
 
@@ -24,6 +25,29 @@ export function clearTokens(): void {
   localStorage.removeItem(REFRESH_TOKEN_KEY)
 }
 
+/**
+ * Refresh the access token using the refresh token.
+ * Returns true if successful, false otherwise.
+ */
+async function refreshAccessToken(): Promise<boolean> {
+  const refreshToken = getRefreshToken()
+  if (!refreshToken) {
+    return false
+  }
+  try {
+    const response = await post<RefreshResponse>('/auth/refresh', {
+      refresh_token: refreshToken,
+    } as RefreshRequest, { skipAuth: true })
+    // Update tokens
+    setTokens(response.access_token, response.refresh_token)
+    return true
+  } catch (err) {
+    // Refresh failed
+    clearTokens()
+    return false
+  }
+}
+
 // Error class that includes the API error code
 export class ApiClientError extends Error {
   constructor(
@@ -45,6 +69,7 @@ interface FetchOptions extends RequestInit {
  * - Attaches the Authorization header when a token exists
  * - Unwraps the error envelope and surfaces error.code
  * - Handles JSON parsing
+ * - Implements refresh-on-401 (once)
  */
 async function apiFetch<T>(
   endpoint: string,
@@ -77,6 +102,16 @@ async function apiFetch<T>(
 
   // Handle error responses
   if (!response.ok) {
+    // If we get a 401 and haven't tried refreshing yet, attempt to refresh token
+    if (response.status === 401 && !skipAuth) {
+      const refreshSuccessful = await refreshAccessToken()
+      if (refreshSuccessful) {
+        // Retry the original request with the new token
+        return apiFetch<T>(endpoint, options)
+      }
+      // If refresh failed, fall through to throw error
+    }
+    
     let errorData: ApiError
     try {
       errorData = await response.json()
