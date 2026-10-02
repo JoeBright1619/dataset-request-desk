@@ -263,3 +263,99 @@ _Not yet implemented._ See `PLAN.md` Phase 10 for the decision gate and
 - `docs/API.md` — HTTP contract
 - `docs/DATA_MODEL.md` — schema, constraints, indexes
 - `docs/NOTES.md` — design rationale, key decisions, security, scale
+
+## Reviewer Smoke Test
+
+A 5-minute script to verify all required features work correctly from a clean clone:
+
+### Prerequisites
+- Docker Desktop installed and running
+- Git
+- Basic command-line familiarity
+
+### Steps
+1. **Clone the repository** (if not already done):
+   ```bash
+   git clone <repository-url>
+   cd dataset-request-desk
+   ```
+
+2. **Start all services**:
+   ```bash
+   docker compose up --build -d
+   ```
+
+3. **Wait for services to be ready** (approximately 30 seconds):
+   ```bash
+   # Backend health check
+   curl -s http://localhost:8000/health
+   
+   # Frontend should be accessible
+   curl -s http://localhost:8080
+   ```
+
+4. **Login as an operator**:
+   - Open http://localhost:8080 in your browser
+   - You should be redirected to the login page
+   - Email: `ops1@example.com`
+   - Password: `ops123`
+   - Click "Sign in"
+
+5. **Verify operator dashboard loads**:
+   - You should see the "All Requests" view
+   - No requests should be present initially (clean state)
+
+6. **Create a test request as a client**:
+   - Click on your profile icon in the top-right
+   - Select "Logout"
+   - Login as client-a:
+     - Email: `client-a@example.com`
+     - Password: `client123`
+   - Click "New Request" button
+   - Fill in the form:
+     - Task name: `test_task_smoke`
+     - Robot ID: `test_robot_001`
+     - Episodes: `5`
+   - Click "Submit Request"
+
+7. **Verify request appears in operator view**:
+   - Logout from client-a
+   - Login as ops1 again
+   - You should see the newly created request in the list
+   - Status should be `submitted`
+
+8. **Test request lifecycle**:
+   - Click on the request to open the detail view
+   - Click "Start Work" to move to `in_progress`
+   - Click "Deliver" to move to `delivered`
+   - Click "Accept" to move to `accepted` (terminal state)
+
+9. **Verify analytics endpoint**:
+   ```bash
+   # Get an auth token (operator)
+   TOKEN=$(curl -s -X POST http://localhost:8000/auth/login \
+     -H "Content-Type: application/json" \
+     -d '{"email":"ops1@example.com","password":"ops123"}' | \
+     jq -r '.access_token')
+   
+   # Call analytics endpoint
+   curl -s -H "Authorization: Bearer $TOKEN" \
+     "http://localhost:8000/api/v1/analytics?from=2026-01-01T00:00:00Z&to=2026-12-31T23:59:59Z" | jq .
+   ```
+   Should return aggregations including your test request data.
+
+10. **Clean up**:
+    ```bash
+    docker compose down -v
+    ```
+
+### Expected Results
+- All steps complete without errors
+- Request flows through all states: submitted → in_progress → delivered → accepted
+- Analytics endpoint returns data
+- No console errors in browser or backend logs
+
+### Troubleshooting
+- If services fail to start: `docker compose logs` to check output
+- If authentication fails: verify you're using the correct seed credentials
+- If analytics returns empty: ensure you waited for services to fully start

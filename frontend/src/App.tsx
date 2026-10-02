@@ -14,7 +14,13 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
 
-          <Route element={<AppLayout />}>
+                    <Route
+            element={
+              <RequireAuth>
+                <AppLayout />
+              </RequireAuth>
+            }
+          >
             <Route path="/" element={<Navigate to="/requests" replace />} />
             <Route path="/requests" element={<RequestsPage />} />
             <Route

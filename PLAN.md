@@ -26,7 +26,7 @@ and only starts once 1–9 are complete, tested, and documented.
 
 TASK-09-04 — Operator smoke path
 
-Status: IN PROGRESS
+Status: Done
 
 
 ---
