@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import type { Request, RequestStatus } from '../api/types'
 import type { AllowedTransition } from '../lib/transitions'
 
@@ -28,6 +29,9 @@ export function RequestDetailModal({
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [onClose])
+
+  const navigate = useNavigate()
+  const requestId = request.id
 
   const selected = transitions.find((t) => t.status === transition)
   const needsReason = !!selected?.requiresReason
@@ -62,6 +66,9 @@ export function RequestDetailModal({
           {request.delivered_at && (
             <p><strong>Delivered At:</strong> {new Date(request.delivered_at).toLocaleString()}</p>
           )}
+          <button className="btn btn-primary" onClick={() => navigate(`/requests/${requestId}/assignments`)}>
+            Assign episodes to this request
+          </button>
         </div>
 
         <div className="transition-section">
