@@ -37,7 +37,7 @@ function RequestsPage() {
   const hasActiveFilters = !!status || !!taskNameFilter
 
   const navigate = useNavigate()
-  const { logout, user } = useAuth()
+  const { user } = useAuth()
   const role = (user?.role ?? '') as UserRole | ''
   const isClient = role === 'client'
 
@@ -166,12 +166,6 @@ function RequestsPage() {
     }
     return runAction(id, () => updateRequestStatus(id, 'rejected', trimmed))
   }
-
-  const handleLogout = () => {
-    logout()
-    navigate('/login')
-  }
-
   // Derive the modal's request from the CURRENT list so it never goes stale
   const detailRequest = useMemo(
     () => (detailId ? requests.find((r) => r.id === detailId) ?? null : null),
@@ -196,9 +190,6 @@ function RequestsPage() {
               : 'View and manage all dataset requests'}
           </p>
         </div>
-        <button className="btn" onClick={handleLogout}>
-          Logout
-        </button>
       </header>
       {error && <div className="alert">{error}</div>}
 

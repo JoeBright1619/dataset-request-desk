@@ -1,0 +1,29 @@
+.assign-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) 2fr;
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 800px) {
+  .assign-grid { grid-template-columns: 1fr; }
+}
+.panel { background: #f8f9fa; padding: 16px; border-radius: 8px; }
+.panel h2 { margin-top: 0; font-size: 16px; }
+
+.episode-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 14px; }
+.episode-table th, .episode-table td { text-align: left; padding: 6px 8px; border-bottom: 1px solid #e5e5e5; }
+.episode-table tr:hover { background: #fff; }
+
+.assignment-list { list-style: none; padding: 0; margin: 0; }
+.assignment-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid #e5e5e5; gap: 12px;
+}
+
+.assign-actions {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 12px; gap: 12px;
+}
+.notice { background: #fff3cd; padding: 12px; border-radius: 4px; margin-bottom: 16px; }
+.small { font-size: 12px; }
+.btn-danger { background: #dc3545; }

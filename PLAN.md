@@ -24,7 +24,7 @@ and only starts once 1–9 are complete, tested, and documented.
 
 # CURRENT TASK
 
-TASK-08-04 — Operator: episode search and assignment
+TASK-09-01 — Dockerfile (backend, frontend)
 
 Status: Not Done
 
@@ -931,7 +931,7 @@ Keep it small. Functional correctness over polish.
   Commit:
   feat(frontend): add operator request list and detail
 
-- [ ] TASK-08-04 — Operator: episode search and assignment
+- [x] TASK-08-04 — Operator: episode search and assignment
 
   Objective:
   Filter episodes by task, quality, robot, date, and assigned state.
