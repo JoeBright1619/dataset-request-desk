@@ -1,0 +1,47 @@
+# VCS / OS
+.git/
+.gitignore
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Python caches & envs
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+coverage.xml
+*.sqlite
+*.sqlite3
+*.db
+cache.*.db
+CACHEDIR.TAG
+0.16.9/
+
+# Node
+node_modules/
+dist/
+build/
+.vite/
+coverage/
+
+# Env / secrets (do NOT bake these into images)
+.env
+.env.*
+!.env.example
+
+# Local scratch
+debug.log
+*.log
+docs/
+PLAN.md
+GUIDE.md
+README.md

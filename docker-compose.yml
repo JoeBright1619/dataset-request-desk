@@ -1,0 +1,76 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER:     ${POSTGRES_USER:-drd}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-drd}
+      POSTGRES_DB:       ${POSTGRES_DB:-drd}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-drd} -d ${POSTGRES_DB:-drd}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    # Uncomment to inspect from the host:
+    # ports: ["5432:5432"]
+
+  migrate:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    # Override CMD with alembic; image already contains alembic.ini + migrations/.
+    command: ["alembic", "upgrade", "head"]
+    environment: &backend_env
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-drd}:${POSTGRES_PASSWORD:-drd}@db:5432/${POSTGRES_DB:-drd}
+      JWT_SECRET:   ${JWT_SECRET:-dev-only-change-me}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:8080}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
+  seed:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    command: ["python", "-m", "app.cli", "seed-users"]
+    environment: *backend_env
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    restart: "no"  
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment: *backend_env
+    depends_on:
+      db:
+        condition: service_healthy
+      seed:
+        condition: service_completed_successfully
+    ports:
+      - "8000:8000"
+    volumes:
+      # Only if your app writes uploaded CSVs / files to disk. Otherwise drop.
+      - backend-uploads:/app/uploads
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        # Same-origin path — nginx proxies /api/ → backend:8000.
+        VITE_API_BASE_URL: /api/v1
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
+  backend-uploads:

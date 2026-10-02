@@ -26,7 +26,7 @@ and only starts once 1–9 are complete, tested, and documented.
 
 TASK-09-01 — Dockerfile (backend, frontend)
 
-Status: Not Done
+Status: IN PROGRESS
 
 
 ---
@@ -974,7 +974,7 @@ Keep it small. Functional correctness over polish.
 
 Make the system operable end-to-end from a clean clone.
 
-- [ ] TASK-09-01 — Dockerfile (backend, frontend)
+- [x] TASK-09-01 — Dockerfile (backend, frontend)
 
   Objective:
   Build images for backend and frontend.
@@ -986,7 +986,7 @@ Make the system operable end-to-end from a clean clone.
   Commit:
   chore(docker): add backend and frontend Dockerfiles
 
-- [ ] TASK-09-02 — Docker Compose
+- [x] TASK-09-02 — Docker Compose
 
   Objective:
   A clean clone runs with one command: `docker compose up`.
