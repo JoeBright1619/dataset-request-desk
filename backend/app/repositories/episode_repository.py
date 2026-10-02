@@ -12,6 +12,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import InvalidCursorError
 from app.core.pagination import CursorPage, build_page, decode_cursor
+from app.core.text import escape_like
 from app.models.assignment import Assignment
 from app.models.episode import Episode
 
@@ -136,11 +137,13 @@ class EpisodeRepository:
     def _filtered_statement(filters: EpisodeFilters) -> Select[Episode]:
         statement = select(Episode)
         if filters.task_name is not None:
-            statement = statement.where(Episode.task_name == filters.task_name)
+            pattern = f"{escape_like(filters.task_name)}%"
+            statement = statement.where(Episode.task_name.ilike(pattern, escape="\\"))
         if filters.quality is not None:
             statement = statement.where(Episode.quality == filters.quality)
         if filters.robot_id is not None:
-            statement = statement.where(Episode.robot_id == filters.robot_id)
+            pattern = f"{escape_like(filters.robot_id)}%"
+            statement = statement.where(Episode.robot_id.ilike(pattern, escape="\\"))
         if filters.recorded_from is not None:
             statement = statement.where(Episode.recorded_at >= filters.recorded_from)
         if filters.recorded_to is not None:
