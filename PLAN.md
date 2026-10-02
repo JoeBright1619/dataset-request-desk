@@ -24,7 +24,7 @@ and only starts once 1–9 are complete, tested, and documented.
 
 # CURRENT TASK
 
-TASK-08-02 — Client: requests page
+TASK-08-03 — Operator: requests list and detail
 
 Status: Not Done
 
@@ -914,7 +914,7 @@ Keep it small. Functional correctness over polish.
   Commit:
   feat(frontend): add auth flow and role-based routing
 
-- [ ] TASK-08-02 — Client: requests page
+- [x] TASK-08-02 — Client: requests page
 
   Objective:
   Client can create a request, view their list, see status, accept or reject

@@ -41,16 +41,38 @@ export interface User {
 }
 
 // Request types
+// Matches backend RequestStatus Literal
+export type RequestStatus =
+  | 'submitted'
+  | 'in_progress'
+  | 'delivered'
+  | 'accepted'
+  | 'rejected'
+
+// Matches backend RequestResponse
 export interface Request {
-  id: number
-  client_id: number
+  id: string                 // UUID serialized as string
+  client_id: string          // UUID
+  client_name: string
   task_name: string
-  quality: 'good' | 'acceptable'
   episodes_requested: number
   episodes_assigned: number
-  status: string
-  created_at: string
-  updated_at: string
+  deadline: string           // ISO 8601 datetime
+  notes: string | null
+  status: RequestStatus
+  created_at: string         // ISO 8601
+  updated_at: string         // ISO 8601
+  delivered_at: string | null
+}
+
+// Matches backend RequestListResponse
+export interface RequestListResponse {
+  items: Request[]
+  next_cursor: string | null
+  prev_cursor: string | null
+  has_more: boolean
+  has_prev: boolean
+  limit: number
 }
 
 // Episode types
