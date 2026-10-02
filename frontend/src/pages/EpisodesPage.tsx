@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useEpisodeSearch } from '../hooks/useEpisodeSearch'
 import { EpisodeFilters } from '../components/EpisodeFilters'
 import { EpisodeTable } from '../components/EpisodeTable'
