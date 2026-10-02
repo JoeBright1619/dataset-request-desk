@@ -24,7 +24,7 @@ and only starts once 1–9 are complete, tested, and documented.
 
 # CURRENT TASK
 
-TASK-09-04 — Operator smoke path
+TASK-11-D1 — Final docs and tracker sync
 
 Status: Done
 
@@ -41,7 +41,7 @@ Status: Done
 - [ ] Phase 6 — Assignments
 - [ ] Phase 7 — Analytics
 - [ ] Phase 8 — Frontend
-- [ ] Phase 9 — Observability & Docker
+- [x] Phase 9 — Observability & Docker
 - [ ] Phase 10 — Stretch feature (optional)
 - [ ] Phase 11 — Final review
 
@@ -1016,7 +1016,7 @@ Make the system operable end-to-end from a clean clone.
   Commit:
   chore(seed): import seed CSV on first startup
 
-- [ ] TASK-09-04 — Operator smoke path
+- [x] TASK-09-04 — Operator smoke path
 
   Objective:
   A documented 5-minute script a reviewer can follow to exercise every
@@ -1028,7 +1028,7 @@ Make the system operable end-to-end from a clean clone.
   Commit:
   docs(readme): add reviewer smoke test path
 
-- [ ] TASK-09-T1 — Phase tests
+- [x] TASK-09-T1 — Phase tests
 
   Objective:
   Verify the compose stack behaves idempotently.
@@ -1106,7 +1106,7 @@ Only starts once Phases 1–9 are complete, tested, and documented.
 
 Deliberate review of the whole system against the brief.
 
-- [ ] TASK-11-01 — Domain review
+- [x] TASK-11-01 — Domain review
 
   Objective:
   Walk through every domain rule from the brief and confirm enforcement.
@@ -1122,7 +1122,7 @@ Deliberate review of the whole system against the brief.
   Commit:
   chore(review): domain rules audit
 
-- [ ] TASK-11-02 — Database review
+- [x] TASK-11-02 — Database review
 
   Objective:
   Verify schema integrity.
@@ -1135,7 +1135,7 @@ Deliberate review of the whole system against the brief.
   Commit:
   chore(review): database audit
 
-- [ ] TASK-11-03 — Security review
+- [x] TASK-11-03 — Security review
 
   Objective:
   Confirm every security item in `GUIDE.md` §4 is honoured.
@@ -1150,7 +1150,7 @@ Deliberate review of the whole system against the brief.
   Commit:
   chore(review): security audit
 
-- [ ] TASK-11-04 — Operations review
+- [x] TASK-11-04 — Operations review
 
   Objective:
   Confirm operability.
@@ -1164,7 +1164,7 @@ Deliberate review of the whole system against the brief.
   Commit:
   chore(review): operations audit
 
-- [ ] TASK-11-05 — Documentation review
+- [x] TASK-11-05 — Documentation review
 
   Objective:
   Confirm the docs match the system and the brief.
@@ -1180,7 +1180,7 @@ Deliberate review of the whole system against the brief.
   Commit:
   chore(review): documentation audit
 
-- [ ] TASK-11-06 — Git review
+- [x] TASK-11-06 — Git review
 
   Objective:
   Confirm commit history reflects the work.
@@ -1193,7 +1193,7 @@ Deliberate review of the whole system against the brief.
   Commit:
   (no commit — this is a check)
 
-- [ ] TASK-11-T1 — Final end-to-end test run
+- [x] TASK-11-T1 — Final end-to-end test run
 
   Objective:
   Run the full test suite and the reviewer smoke path.
@@ -1206,7 +1206,7 @@ Deliberate review of the whole system against the brief.
   Commit:
   chore(review): final end-to-end verification
 
-- [ ] TASK-11-D1 — Final docs and tracker sync
+- [x] TASK-11-D1 — Final docs and tracker sync
 
   Objective:
   Confirm all trackers reflect reality. Mark `PROJECT PROGRESS` fully checked
