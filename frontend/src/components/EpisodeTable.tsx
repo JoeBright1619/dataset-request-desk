@@ -66,7 +66,11 @@ export function EpisodeTable({ episodes, selection }: Props) {
             <td>{ep.episode_id}</td>
             <td>{ep.robot_id}</td>
             <td>{ep.task_name}</td>
-            <td>{ep.quality}</td>
+            <td>
+              <span className={`quality-badge quality-badge--${ep.quality}`}>
+                {ep.quality}
+              </span>
+            </td>
             <td>{formatDuration(ep.duration_seconds)}</td>
             <td>{ep.operator_name ?? '—'}</td>
             <td>{new Date(ep.recorded_at).toLocaleString()}</td>
