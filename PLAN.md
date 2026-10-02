@@ -24,7 +24,7 @@ and only starts once 1–9 are complete, tested, and documented.
 
 # CURRENT TASK
 
-TASK-08-03 — Operator: requests list and detail
+TASK-08-04 — Operator: episode search and assignment
 
 Status: Not Done
 
@@ -923,7 +923,7 @@ Keep it small. Functional correctness over polish.
   Commit:
   feat(frontend): add client requests page
 
-- [ ] TASK-08-03 — Operator: requests list and detail
+- [x] TASK-08-03 — Operator: requests list and detail
 
   Objective:
   Operator sees all requests, inspects detail, transitions status.
