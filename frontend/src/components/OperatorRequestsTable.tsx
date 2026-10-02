@@ -22,24 +22,31 @@ export function OperatorRequestsTable({ requests, onViewDetail }: Props) {
             <th>Ep. Assigned</th>
             <th>Status</th>
             <th>Created At</th>
-            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {requests.map((request) => (
-            <tr key={request.id}>
-              <td>{request.id}</td>
+            <tr
+              key={request.id}
+              className="requests-table__row"
+              onClick={() => onViewDetail(request)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  onViewDetail(request)
+                }
+              }}
+              tabIndex={0}
+              role="button"
+              aria-label={`View request ${request.id} for ${request.client_name}`}
+            >
+              <td title={request.id}>{request.id.slice(0, 8)}</td>
               <td>{request.client_name}</td>
               <td>{request.task_name}</td>
               <td>{request.episodes_requested}</td>
               <td>{request.episodes_assigned}</td>
               <td>{request.status}</td>
               <td>{new Date(request.created_at).toLocaleString()}</td>
-              <td>
-                <button className="btn btn-sm" onClick={() => onViewDetail(request)}>
-                  View Detail
-                </button>
-              </td>
             </tr>
           ))}
         </tbody>

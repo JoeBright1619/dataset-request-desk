@@ -82,10 +82,109 @@
   display: flex;
   justify-content: flex-end;
 }
+/* Wrapper — safety net for narrow screens */
+.requests-table {
+  width: 100%;
+  overflow-x: auto;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+/* Table — full width, collapsed borders */
 .requests-table table {
   width: 100%;
   border-collapse: collapse;
-  table-layout: auto;   /* or fixed, see below */
+  table-layout: auto;
+  font-size: 0.9rem;
+}
+
+/* Header — subtle background, strong bottom border */
+.requests-table thead {
+  background: #f8fafc;
+}
+
+.requests-table th {
+  text-align: left;
+  padding: 10px 14px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #475569;
+  border-bottom: 2px solid #e2e8f0;
+  white-space: nowrap;
+}
+
+/* Cells — consistent padding, row separator */
+.requests-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #1e293b;
+  vertical-align: middle;
+}
+
+/* Last row: no bottom border (it's inside a bordered wrapper) */
+.requests-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Column sizing — keeps things proportional without an explicit layout */
+.requests-table th:nth-child(1),   /* ID */
+.requests-table td:nth-child(1) {
+  width: 100px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.requests-table th:nth-child(4),   /* Ep. Requested */
+.requests-table td:nth-child(4),
+.requests-table th:nth-child(5),   /* Ep. Assigned */
+.requests-table td:nth-child(5) {
+  width: 110px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;   /* digits align vertically */
+}
+
+.requests-table th:nth-child(6),   /* Status */
+.requests-table td:nth-child(6) {
+  width: 140px;
+}
+
+.requests-table th:nth-child(7),   /* Created At */
+.requests-table td:nth-child(7) {
+  width: 180px;
+  white-space: nowrap;
+}
+
+/* Truncate long task names so they can't push the table wider */
+.requests-table td:nth-child(3) {
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---------- Row interaction ---------- */
+
+.requests-table__row {
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+}
+
+.requests-table__row:hover {
+  background: #f1f5f9;
+}
+
+.requests-table__row:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: -2px;
+  background: #eff6ff;
+}
+
+.requests-table__row:active {
+  background: #e2e8f0;
 }
 .request-list {
   list-style: none;
