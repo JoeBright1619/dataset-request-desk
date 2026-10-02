@@ -24,7 +24,7 @@ and only starts once 1–9 are complete, tested, and documented.
 
 # CURRENT TASK
 
-TASK-09-01 — Dockerfile (backend, frontend)
+TASK-09-04 — Operator smoke path
 
 Status: IN PROGRESS
 
@@ -1004,7 +1004,7 @@ Make the system operable end-to-end from a clean clone.
   Commit:
   chore(docker): add compose stack with migrations and seed on startup
 
-- [ ] TASK-09-03 — Seed CSV import on startup
+- [x] TASK-09-03 — Seed CSV import on startup
 
   Objective:
   `seed/episodes.csv` is imported automatically on first boot.

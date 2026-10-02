@@ -42,16 +42,20 @@ services:
       migrate:
         condition: service_completed_successfully
     restart: "no"  
-
+  seed-episodes:
+    build: { context: ., dockerfile: backend/Dockerfile }
+    command: ["python", "-m", "app.cli", "import-episodes", "/seed/episodes.csv"]
+    environment: *backend_env
+    depends_on:
+      seed: { condition: service_completed_successfully }
+    restart: "no"
   backend:
     build:
       context: .
       dockerfile: backend/Dockerfile
     environment: *backend_env
     depends_on:
-      db:
-        condition: service_healthy
-      seed:
+      seed-episodes:
         condition: service_completed_successfully
     ports:
       - "8000:8000"
