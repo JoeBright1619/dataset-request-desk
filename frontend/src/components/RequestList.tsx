@@ -6,9 +6,16 @@ interface Props {
   actionLoading: Record<string, boolean>
   onAccept: (id: string) => void
   onReject: (id: string) => void
+  onViewDetail: (request: Request) => void
 }
 
-export function RequestList({ requests, actionLoading, onAccept, onReject }: Props) {
+export function RequestList({
+  requests,
+  actionLoading,
+  onAccept,
+  onReject,
+  onViewDetail,
+}: Props) {
   if (requests.length === 0) {
     return <p className="muted">No requests yet. Create one above to get started.</p>
   }
@@ -22,6 +29,7 @@ export function RequestList({ requests, actionLoading, onAccept, onReject }: Pro
           busy={!!actionLoading[req.id]}
           onAccept={onAccept}
           onReject={onReject}
+          onViewDetail={onViewDetail}
         />
       ))}
     </ul>

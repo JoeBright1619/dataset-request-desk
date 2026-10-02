@@ -13,14 +13,26 @@ interface Props {
   busy: boolean
   onAccept: (id: string) => void
   onReject: (id: string) => void
+  onViewDetail: (request: Request) => void
 }
 
-export function RequestItem({ request: req, busy, onAccept, onReject }: Props) {
+export function RequestItem({
+  request: req,
+  busy,
+  onAccept,
+  onReject,
+  onViewDetail,
+}: Props) {
   const showActions = req.status === 'delivered'
 
   return (
     <li className="request-item">
-      <div className="request-item__main">
+      <button
+        type="button"
+        className="request-item__main"
+        onClick={() => onViewDetail(req)}
+        aria-label={`View details for request ${req.task_name}`}
+      >
         <h3>{req.task_name}</h3>
         <p className="request-item__meta">
           Episodes: {req.episodes_requested}
@@ -38,26 +50,9 @@ export function RequestItem({ request: req, busy, onAccept, onReject }: Props) {
         <p className="request-item__status">
           <strong>{STATUS_LABEL[req.status]}</strong>
         </p>
-      </div>
+      </button>
 
-      {showActions && (
-        <div className="request-item__actions">
-          <button
-            className="btn btn--accept"
-            onClick={() => onAccept(req.id)}
-            disabled={busy}
-          >
-            {busy ? '…' : 'Accept'}
-          </button>
-          <button
-            className="btn btn--reject"
-            onClick={() => onReject(req.id)}
-            disabled={busy}
-          >
-            {busy ? '…' : 'Reject'}
-          </button>
-        </div>
-      )}
+      
     </li>
   )
 }

@@ -193,14 +193,54 @@
 }
 
 .request-item {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 12px;
-  background: white;
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  flex-direction: column;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+  overflow: hidden;
+  transition: border-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+.request-item:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+}
+
+/* The button that fills the card and doesn't look like a button. */
+.request-item__main {
+  /* Kill all button chrome */
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  /* Fill the container */
+  display: block;
+  flex: 1 1 auto;
+  width: 100%;
+  box-sizing: border-box;
+
+  /* Card padding — this is your content spacing */
+  padding: 18px 20px;
+
+  /* Hover/focus feel */
+  transition: background-color 0.12s ease;
+}
+
+.request-item__main:hover {
+  background: #fafafa;
+}
+
+.request-item__main:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: -2px;
+  background: #f8fafc;
 }
 
 .request-item__meta {

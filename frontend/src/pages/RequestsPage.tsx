@@ -232,11 +232,12 @@ function RequestsPage() {
         : 'No requests yet. Create one above to get started.'}
     </p>
   : <RequestList
-              requests={requests}
-              actionLoading={actionLoading}
-              onAccept={handleAccept}
-              onReject={handleReject}
-            />}
+  requests={requests}
+  actionLoading={actionLoading}
+  onAccept={handleAccept}
+  onReject={handleReject}
+  onViewDetail={(r) => setDetailId(r.id)}
+/>}
           </section>
         </>
       ) : (
@@ -263,6 +264,7 @@ function RequestsPage() {
           submitting={transitioning}
           onClose={() => setDetailId(null)}
           onSubmit={(status, reason) => handleTransition(detailRequest.id, status, reason)}
+          canAssignEpisodes={!isClient}  
         />
       )}
     </div>

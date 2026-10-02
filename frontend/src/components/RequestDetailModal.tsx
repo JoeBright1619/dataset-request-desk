@@ -9,6 +9,7 @@ interface Props {
   submitting: boolean
   onClose: () => void
   onSubmit: (status: RequestStatus, reason?: string) => void
+  canAssignEpisodes?: boolean        // ← new; default false
 }
 
 export function RequestDetailModal({
@@ -17,6 +18,7 @@ export function RequestDetailModal({
   submitting,
   onClose,
   onSubmit,
+  canAssignEpisodes = false,
 }: Props) {
   const [transition, setTransition] = useState<RequestStatus | ''>('')
   const [reason, setReason] = useState('')
@@ -66,9 +68,20 @@ export function RequestDetailModal({
           {request.delivered_at && (
             <p><strong>Delivered At:</strong> {new Date(request.delivered_at).toLocaleString()}</p>
           )}
-          <button className="btn btn-primary" onClick={() => navigate(`/requests/${requestId}/assignments`)}>
-            Assign episodes to this request
-          </button>
+          {canAssignEpisodes && (
+          <div className="modal-actions">
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => {
+                onClose()
+                navigate(`/requests/${request.id}/assignments`)
+              }}
+            >
+              Assign episodes to this request
+            </button>
+          </div>
+        )}
         </div>
 
         <div className="transition-section">
